@@ -1,12 +1,12 @@
-﻿using IronPdf.Editing;
+﻿using QRCoder;
+using System.Drawing;
+using System.Drawing.Imaging;
+using IronPdf.Editing;
 using IronPdf.Security;
 using IronSofts.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using QRCoder;
-using System.Drawing;
-using System.Drawing.Imaging;
-using IronSofts.Controllers;
+
 
 namespace IronSofts.Controllers
 {
@@ -134,51 +134,59 @@ namespace IronSofts.Controllers
             return File(System.IO.File.ReadAllBytes(outputPath), "application/pdf", "Secured.pdf");
         }
 
-        //Add images and,logo and QR code to pdf
+        // Update the problematic code block in the AddContentToPdf method
         [HttpGet("/pdf/add-content")]
         public IActionResult AddContentToPdf()
         {
-            var pdfPath = "wwwroot/pdfs/sample.pdf";
-            var outputPath = "wwwroot/pdfs/with_content.pdf";
-            var imagePath = "wwwroot/images/logo.png"; // Image to insert (must exist)
+            // 1. Generate QR Code Image
+            //var qrGenerator = new QRCodeGenerator();
+            //var qrData = qrGenerator.CreateQrCode("https://excelsiortechnologies.com", QRCodeGenerator.ECCLevel.Q);
+            //var qrCode = new QRCode(qrData);
 
-            if (!System.IO.File.Exists(pdfPath))
-                return NotFound("PDF not found.");
+            //var qrImagePath = "wwwroot/images/temp_qr.png";
+            //using (var qrBitmap = qrCode.GetGraphic(20) as Bitmap) // Cast to Bitmap explicitly
+            //{
+            //    if (qrBitmap != null) // Ensure the cast was successful
+            //    {
+            //        qrBitmap.Save(qrImagePath, ImageFormat.Png); // Save the image
+            //    }
+            //}
 
-            var pdf = PdfDocument.FromFile(pdfPath);
-            var editor = new PdfDocumentEditor(pdf);
+            // 2. Build the HTML
+            var html = @"
+            <html>
+            <head>
+                <style>
+                    body {
+                        font-family: Arial;
+                        padding: 40px;
+                    }
+                    .text {
+                        font-size: 24px;
+                        color: red;
+                        font-weight: bold;
+                    }
+                    img {
+                        margin-top: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class='text'>CONFIDENTIAL</div>
+                <p>This is your PDF with embedded text, logo, and QR.</p>
+                <img src='file:./wwwroot/images/logo.png' width='150' />
+                <br />
+                <img src='file:./wwwroot/images/temp_qr.png' width='100' />
+            </body>
+            </html>";
 
-            // 1. Add text annotation
-            editor.AddText("CONFIDENTIAL", 100, 100, page: 0, fontSize: 18, color: System.Drawing.Color.Red);
+            // 3. Render HTML to PDF
+            var renderer = new HtmlToPdf();
+            var pdf = renderer.RenderHtmlAsPdf(html);
 
-            // 2. Add image (logo)
-            if (System.IO.File.Exists(imagePath))
-                editor.AddImage(imagePath, 400, 100, width: 100, height: 100, page: 0);
-
-            // 3. Generate and Add QR Code (using QRCoder)
-            using (var qrGenerator = new QRCoder.QRCodeGenerator())
-            {
-                var qrData = qrGenerator.CreateQrCode("https://google.com", QRCodeGenerator.ECCLevel.Q);
-                var qrCode = new QRCoder.QRCode(qrData); // No 'using' here
-
-                using (var bitmap = qrCode.GetGraphic(20))
-                {
-                    var qrPath = "wwwroot/images/temp_qr.png";
-                    Save(qrPath, ImageFormat.Png);
-                    editor.AddImage(qrPath, 100, 600, width: 100, height: 100, page: 0);
-                }
-            }
-
-            // Save and return
-            editor.SaveAs(outputPath);
-            return File(System.IO.File.ReadAllBytes(outputPath), "application/pdf", "WithContent.pdf");
+            // 4. Return as file
+            return File(pdf.BinaryData, "application/pdf", "WithContent.pdf");
         }
 
-        private void Save(string qrPath, ImageFormat png)
-        {
-            throw new NotImplementedException();
-        }
-
-        
     }
 }
