@@ -1,8 +1,12 @@
 ﻿using IronPdf.Editing;
 using IronPdf.Security;
 using IronSofts.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using QRCoder;
+using System.Drawing;
+using System.Drawing.Imaging;
+using IronSofts.Controllers;
 
 namespace IronSofts.Controllers
 {
@@ -47,7 +51,6 @@ namespace IronSofts.Controllers
         {
             var pdf = PdfDocument.FromFile("wwwroot/pdfs/multipage.pdf");
 
-            // Fix: Replace the non-existent SplitToIndividualPages method with a valid approach
             var splitPages = new List<PdfDocument>();
             for (int i = 0; i < pdf.PageCount; i++)
             {
@@ -87,10 +90,10 @@ namespace IronSofts.Controllers
                 DrawDividerLine = true
             };
 
-            var pdf = renderer.RenderHtmlAsPdf("<h1>Document with Header/Footer</h1><p>This is sample content.</p>");
+            var pdf = renderer.RenderHtmlAsPdf("<h1>Document with Header/Footer and Wtaermark.</h1><p>This is sample content.</p>");
 
-            // Fix for CS1061 and CS0234: Use ApplyWatermark method instead of WatermarkAllPages
-            pdf.ApplyWatermark("<div style='color:rgba(200,0,0,0.3);font-size:48px;'>CONFIDENTIAL</div>", 50, VerticalAlignment.Middle, HorizontalAlignment.Center);
+           
+            pdf.ApplyWatermark("<div style='color:rgba(200,0,0,0.8);font-size:48px;'>WATERMARK</div>", 50, VerticalAlignment.Middle, HorizontalAlignment.Center);
 
             return File(pdf.BinaryData, "application/pdf", "Formatted.pdf");
         }
@@ -105,25 +108,25 @@ namespace IronSofts.Controllers
             return Content(text);
         }
 
-        // Fix for CS1061: Replace 'AllowUserEditing' with 'AllowUserEdits' which is a valid property of PdfSecuritySettings.
+        
         [HttpGet("/pdf/secure")]
         public IActionResult SecurePdf()
         {
-            var pdfPath = "wwwroot/pdfs/sample.pdf"; // Make sure this exists
+            var pdfPath = "wwwroot/pdfs/sample.pdf"; 
             var outputPath = "wwwroot/pdfs/secured.pdf";
 
             // Load existing PDF
             var pdf = PdfDocument.FromFile(pdfPath);
 
             // Set security options
-            pdf.SecuritySettings.UserPassword = "user123";     // Required to open the PDF
-            pdf.SecuritySettings.OwnerPassword = "owner456";   // Required to change permissions
+            pdf.SecuritySettings.UserPassword = "user123";     
+            pdf.SecuritySettings.OwnerPassword = "owner456";   
 
             // Set specific permissions
             pdf.SecuritySettings.AllowUserCopyPasteContent = false;
-            pdf.SecuritySettings.AllowUserPrinting = PdfPrintSecurity.FullPrintRights; // Fix for CS0029: Use the correct enum value
+            pdf.SecuritySettings.AllowUserPrinting = PdfPrintSecurity.FullPrintRights; 
 
-            pdf.SecuritySettings.AllowUserEdits = PdfEditSecurity.NoEdit; // Correct property to disable editing
+            pdf.SecuritySettings.AllowUserEdits = PdfEditSecurity.NoEdit; 
 
             // Save secured version
             pdf.SaveAs(outputPath);
@@ -131,6 +134,51 @@ namespace IronSofts.Controllers
             return File(System.IO.File.ReadAllBytes(outputPath), "application/pdf", "Secured.pdf");
         }
 
+        //Add images and,logo and QR code to pdf
+        [HttpGet("/pdf/add-content")]
+        public IActionResult AddContentToPdf()
+        {
+            var pdfPath = "wwwroot/pdfs/sample.pdf";
+            var outputPath = "wwwroot/pdfs/with_content.pdf";
+            var imagePath = "wwwroot/images/logo.png"; // Image to insert (must exist)
 
+            if (!System.IO.File.Exists(pdfPath))
+                return NotFound("PDF not found.");
+
+            var pdf = PdfDocument.FromFile(pdfPath);
+            var editor = new PdfDocumentEditor(pdf);
+
+            // 1. Add text annotation
+            editor.AddText("CONFIDENTIAL", 100, 100, page: 0, fontSize: 18, color: System.Drawing.Color.Red);
+
+            // 2. Add image (logo)
+            if (System.IO.File.Exists(imagePath))
+                editor.AddImage(imagePath, 400, 100, width: 100, height: 100, page: 0);
+
+            // 3. Generate and Add QR Code (using QRCoder)
+            using (var qrGenerator = new QRCoder.QRCodeGenerator())
+            {
+                var qrData = qrGenerator.CreateQrCode("https://google.com", QRCodeGenerator.ECCLevel.Q);
+                var qrCode = new QRCoder.QRCode(qrData); // No 'using' here
+
+                using (var bitmap = qrCode.GetGraphic(20))
+                {
+                    var qrPath = "wwwroot/images/temp_qr.png";
+                    Save(qrPath, ImageFormat.Png);
+                    editor.AddImage(qrPath, 100, 600, width: 100, height: 100, page: 0);
+                }
+            }
+
+            // Save and return
+            editor.SaveAs(outputPath);
+            return File(System.IO.File.ReadAllBytes(outputPath), "application/pdf", "WithContent.pdf");
+        }
+
+        private void Save(string qrPath, ImageFormat png)
+        {
+            throw new NotImplementedException();
+        }
+
+        
     }
 }
