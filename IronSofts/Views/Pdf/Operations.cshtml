@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "PDF Operations";
+}
+
+<div class="container mt-5">
+    <h2 class="text-primary mb-4">IronPDF Operations</h2>
+
+    <div class="list-group">
+        <a href="/pdf/generate" class="list-group-item list-group-item-action">
+            📄 Generate PDF from Razor View
+        </a>
+       
+        <a href="/pdf/merge" class="list-group-item list-group-item-action">
+            🔀 Merge Two PDFs
+        </a>
+
+        <a href="/pdf/split" class="list-group-item list-group-item-action">
+            ✂️ Split PDF into Single Pages
+        </a>
+
+        <a href="/pdf/reorder" class="list-group-item list-group-item-action">
+            🔁 Reorder PDF Pages
+        </a>
+
+        <a href="/pdf/format" class="list-group-item list-group-item-action">
+            📝 Add Header, Footer & Watermark
+        </a>
+
+        <a href="/pdf/extract-text" class="list-group-item list-group-item-action">
+            🔍 Extract Text from PDF
+        </a>
+
+        <a href="/pdf/page-images" class="list-group-item list-group-item-action">
+            🖼️ Render Each PDF Page as Image
+        </a> 
+
+        <a href="/pdf/secure" class="list-group-item list-group-item-action">
+            🔐 Secure PDF (Password & Permissions)
+        </a>
+    </div>
+
+
+    @* <div class="mt-4">
+        <p class="text-muted"><small>Note: Make sure the required PDF files exist in <code>/wwwroot/pdfs/</code>.</small></p>
+    </div> *@
+</div>
