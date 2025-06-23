@@ -1,11 +1,12 @@
-﻿using QRCoder;
-using System.Drawing;
-using System.Drawing.Imaging;
-using IronPdf.Editing;
+﻿using IronPdf.Editing;
 using IronPdf.Security;
 using IronSofts.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using QRCoder;
+using System.Drawing;
+using System.Drawing.Imaging;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace IronSofts.Controllers
@@ -92,7 +93,7 @@ namespace IronSofts.Controllers
 
             var pdf = renderer.RenderHtmlAsPdf("<h1>Document with Header/Footer and Wtaermark.</h1><p>This is sample content.</p>");
 
-           
+
             pdf.ApplyWatermark("<div style='color:rgba(200,0,0,0.8);font-size:48px;'>WATERMARK</div>", 50, VerticalAlignment.Middle, HorizontalAlignment.Center);
 
             return File(pdf.BinaryData, "application/pdf", "Formatted.pdf");
@@ -108,25 +109,25 @@ namespace IronSofts.Controllers
             return Content(text);
         }
 
-        
+        // make pdf password protected
         [HttpGet("/pdf/secure")]
         public IActionResult SecurePdf()
         {
-            var pdfPath = "wwwroot/pdfs/sample.pdf"; 
+            var pdfPath = "wwwroot/pdfs/sample.pdf";
             var outputPath = "wwwroot/pdfs/secured.pdf";
 
             // Load existing PDF
             var pdf = PdfDocument.FromFile(pdfPath);
 
             // Set security options
-            pdf.SecuritySettings.UserPassword = "user123";     
-            pdf.SecuritySettings.OwnerPassword = "owner456";   
+            pdf.SecuritySettings.UserPassword = "user123";
+            pdf.SecuritySettings.OwnerPassword = "owner456";
 
             // Set specific permissions
             pdf.SecuritySettings.AllowUserCopyPasteContent = false;
-            pdf.SecuritySettings.AllowUserPrinting = PdfPrintSecurity.FullPrintRights; 
+            pdf.SecuritySettings.AllowUserPrinting = PdfPrintSecurity.FullPrintRights;
 
-            pdf.SecuritySettings.AllowUserEdits = PdfEditSecurity.NoEdit; 
+            pdf.SecuritySettings.AllowUserEdits = PdfEditSecurity.NoEdit;
 
             // Save secured version
             pdf.SaveAs(outputPath);
@@ -134,59 +135,53 @@ namespace IronSofts.Controllers
             return File(System.IO.File.ReadAllBytes(outputPath), "application/pdf", "Secured.pdf");
         }
 
-        // Update the problematic code block in the AddContentToPdf method
-        [HttpGet("/pdf/add-content")]
-        public IActionResult AddContentToPdf()
+
+        [HttpGet("/pdf/generate-qr-svg")]
+        public IActionResult GenerateQrAsSvg()
         {
-            // 1. Generate QR Code Image
-            //var qrGenerator = new QRCodeGenerator();
-            //var qrData = qrGenerator.CreateQrCode("https://excelsiortechnologies.com", QRCodeGenerator.ECCLevel.Q);
-            //var qrCode = new QRCode(qrData);
+            // 1. Generate SVG QR Code as string
+            var qrGenerator = new QRCodeGenerator();
+            var qrData = qrGenerator.CreateQrCode("https://excelsiortechnologies.com", QRCodeGenerator.ECCLevel.Q);
+            var svgQrCode = new SvgQRCode(qrData);
+            string svgContent = svgQrCode.GetGraphic(5);
 
-            //var qrImagePath = "wwwroot/images/temp_qr.png";
-            //using (var qrBitmap = qrCode.GetGraphic(20) as Bitmap) // Cast to Bitmap explicitly
-            //{
-            //    if (qrBitmap != null) // Ensure the cast was successful
-            //    {
-            //        qrBitmap.Save(qrImagePath, ImageFormat.Png); // Save the image
-            //    }
-            //}
-
-            // 2. Build the HTML
-            var html = @"
-            <html>
-            <head>
-                <style>
-                    body {
-                        font-family: Arial;
-                        padding: 40px;
-                    }
-                    .text {
+            // 2. Embed the SVG directly into the HTML
+            var html = $@"
+        <html>
+        <head>
+            <style>
+                 .text {{
                         font-size: 24px;
                         color: red;
                         font-weight: bold;
-                    }
-                    img {
+                    }}
+                    img {{
                         margin-top: 20px;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class='text'>CONFIDENTIAL</div>
-                <p>This is your PDF with embedded text, logo, and QR.</p>
-                <img src='file:./wwwroot/images/logo.png' width='150' />
-                <br />
-                <img src='file:./wwwroot/images/temp_qr.png' width='100' />
-            </body>
-            </html>";
+                    }}
+                body {{ font-family: Arial; padding: 40px; }}
+                h1 {{ color: darkblue; }}
+                .qr-code {{ margin-top: 20px; }}
+            </style>
+        </head>
+        <body>
+            <h1>QR Code PDF</h1>
+                
+            <p>Below is a live QR code :</p>
+            <div class='qr-code'>{svgContent}</div>
+        </body>
+        </html>";
+            //< p > This is your PDF with embedded text, logo, and QR.</ p >
+            //    < img src = 'file:./wwwroot/images/logo.png' width = '150' />
+            //    < br />
 
-            // 3. Render HTML to PDF
+            // 3. Generate PDF
             var renderer = new HtmlToPdf();
             var pdf = renderer.RenderHtmlAsPdf(html);
 
-            // 4. Return as file
-            return File(pdf.BinaryData, "application/pdf", "WithContent.pdf");
+            // 4. Return the PDF
+            return File(pdf.BinaryData, "application/pdf", "QR-Code-Pdf.pdf");
         }
+
 
     }
 }

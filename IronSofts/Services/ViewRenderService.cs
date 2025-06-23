@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace IronSofts.Services
 {
-
     public interface IViewRenderService
     {
         Task<string> RenderToStringAsync(string viewName, object model);
