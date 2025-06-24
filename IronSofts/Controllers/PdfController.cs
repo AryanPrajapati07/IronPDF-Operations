@@ -1,6 +1,8 @@
 ﻿using IronPdf.Editing;
+using IronPdf.Rendering;
 using IronPdf.Security;
 using IronSofts.Services;
+using IronSoftware.Drawing;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QRCoder;
@@ -135,7 +137,7 @@ namespace IronSofts.Controllers
             return File(System.IO.File.ReadAllBytes(outputPath), "application/pdf", "Secured.pdf");
         }
 
-
+        //generate qr code
         [HttpGet("/pdf/generate-qr-svg")]
         public IActionResult GenerateQrAsSvg()
         {
@@ -181,6 +183,29 @@ namespace IronSofts.Controllers
             // 4. Return the PDF
             return File(pdf.BinaryData, "application/pdf", "QR-Code-Pdf.pdf");
         }
+
+
+
+        //Render Each PDF Page as Image
+        [HttpGet("/pdf/to-image")]
+        public IActionResult ConvertPdfToImage()
+        {
+
+            string pdfPath = "wwwroot/pdfs/sample.pdf";
+            var pdfDoc = PdfDocument.FromFile(pdfPath);
+
+            var anyBitmaps = pdfDoc.ToBitmap(DPI: 300);
+
+            for (int i = 0; i < anyBitmaps.Length; i++)
+            {
+                string imagePath = $"wwwroot/images/pdf_page_{i + 1}.png";
+                anyBitmaps[i].ExportFile(imagePath, AnyBitmap.ImageFormat.Png);
+            }
+
+            return Content($"✅ Converted {anyBitmaps.Length} pages to PNG images successfully.");
+        }
+
+               
 
 
     }

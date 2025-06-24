@@ -1,46 +1,276 @@
 ﻿@{
-    ViewData["Title"] = "PDF Operations";
+    ViewData["Title"] = "PDF & OCR Operations";
 }
 
-<div class="container mt-5">
-    <h2 class="text-primary mb-4">IronPDF Operations</h2>
+<div class="container-fluid py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+            <!-- Header Section -->
+            <div class="text-center mb-5">
+                <h1 class="display-4 text-primary fw-bold mb-3">Document Processing Suite</h1>
+                <p class="lead text-muted">Comprehensive PDF manipulation and OCR text extraction tools</p>
+            </div>
 
-    <div class="list-group">
-        <a href="/pdf/generate" class="list-group-item list-group-item-action">
-            📄 Generate PDF from Razor View
-        </a>
-       
-        <a href="/pdf/merge" class="list-group-item list-group-item-action">
-            🔀 Merge Two PDFs
-        </a>
+            <div class="row g-4">
+                <!-- PDF Operations Section -->
+                <div class="col-12 col-lg-6">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-header bg-primary text-white py-3">
+                            <h3 class="card-title mb-0 d-flex align-items-center">
+                                <i class="bi bi-file-earmark-pdf me-2"></i>
+                                IronPDF Operations
+                            </h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush">
+                                <!-- Generation Group -->
+                                <div class="list-group-item bg-light py-2 px-3">
+                                    <small class="text-muted fw-semibold">DOCUMENT CREATION</small>
+                                </div>
+                                <a href="/pdf/generate" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-3 fs-4">📄</span>
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">Generate PDF from Razor View</h6>
+                                            <small class="text-muted">Convert HTML/Razor views into PDF documents</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="/pdf/generate-qr-svg" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-3 fs-4">🧩</span>
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">Add QR Code & Logo to PDF</h6>
+                                            <small class="text-muted">Embed QR codes and logos into PDF documents</small>
+                                        </div>
+                                    </div>
+                                </a>
 
-        <a href="/pdf/split" class="list-group-item list-group-item-action">
-            ✂️ Split PDF into Single Pages
-        </a>
+                                <!-- Manipulation Group -->
+                                <div class="list-group-item bg-light py-2 px-3">
+                                    <small class="text-muted fw-semibold">DOCUMENT MANIPULATION</small>
+                                </div>
+                                <a href="/pdf/merge" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-3 fs-4">🔀</span>
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">Merge Multiple PDFs</h6>
+                                            <small class="text-muted">Combine two or more PDF files into one</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="/pdf/split" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-3 fs-4">✂️</span>
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">Split PDF into Pages</h6>
+                                            <small class="text-muted">Extract individual pages from PDF documents</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="/pdf/format" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-3 fs-4">📝</span>
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">Format PDF</h6>
+                                            <small class="text-muted">Add headers, footers, and watermarks</small>
+                                        </div>
+                                    </div>
+                                </a>
 
-        @* <a href="/pdf/reorder" class="list-group-item list-group-item-action">
-            🔁 Reorder PDF Pages
-        </a> *@
+                                <!-- Processing Group -->
+                                <div class="list-group-item bg-light py-2 px-3">
+                                    <small class="text-muted fw-semibold">DOCUMENT PROCESSING</small>
+                                </div>
+                                <a href="/pdf/extract-text" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-3 fs-4">🔍</span>
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">Extract Text Content</h6>
+                                            <small class="text-muted">Extract and analyze text from PDF files</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="/pdf/to-image" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-3 fs-4">🖼️</span>
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">Convert to Images</h6>
+                                            <small class="text-muted">Render PDF pages as high-quality images</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="/pdf/secure" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-3 fs-4">🔐</span>
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">Secure PDF</h6>
+                                            <small class="text-muted">Apply password protection and permissions</small>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <a href="/pdf/format" class="list-group-item list-group-item-action">
-            📝 Add Header, Footer & Watermark
-        </a>
+                <!-- OCR Operations Section -->
+                <div class="col-12 col-lg-6">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-header bg-success text-white py-3">
+                            <h3 class="card-title mb-0 d-flex align-items-center">
+                                <i class="bi bi-eye me-2"></i>
+                                IronOCR Operations
+                            </h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush">
+                                <!-- Text Recognition Group -->
+                                <div class="list-group-item bg-light py-2 px-3">
+                                    <small class="text-muted fw-semibold">TEXT RECOGNITION</small>
+                                </div>
+                                <a href="/ocr/image" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-3 fs-4">🖼️</span>
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">Read Image Text</h6>
+                                            <small class="text-muted">Extract text from images using OCR technology</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="/ocr/PDF" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-3 fs-4">📄</span>
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">Read PDF Text</h6>
+                                            <small class="text-muted">Perform OCR on PDF documents and scanned files</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="/ocr/multi-lang" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-3 fs-4">🌐</span>
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">Multi-Language Text</h6>
+                                            <small class="text-muted">Recognize text in multiple languages</small>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="/ocr/handwriting" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-3 fs-4">🌐</span>
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">Handwriting to Text</h6>
+                                            <small class="text-muted">Recognize text in multiple languages</small>
+                                        </div>
+                                    </div>
+                                </a>
 
-        <a href="/pdf/extract-text" class="list-group-item list-group-item-action">
-            🔍 Extract Text from PDF
-        </a>
+                                <!-- Data Extraction Group -->
+                                <div class="list-group-item bg-light py-2 px-3">
+                                    <small class="text-muted fw-semibold">DATA EXTRACTION</small>
+                                </div>
+                                <a href="/ocr/table" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                    <div class="d-flex align-items-center">
+                                        <span class="me-3 fs-4">📊</span>
+                                        <div>
+                                            <h6 class="mb-1 fw-semibold">Extract Table Data</h6>
+                                            <small class="text-muted">Identify and extract structured table data</small>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        @* <a href="/pdf/page-images" class="list-group-item list-group-item-action">
-            🖼️ Render Each PDF Page as Image
-        </a>  *@
+            <!-- XL Operations Section -->
+            <div class="col-12 col-lg-6">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-header bg-success text-white py-3">
+                        <h3 class="card-title mb-0 d-flex align-items-center">
+                            <i class="bi bi-eye me-2"></i>
+                            IronXL Operations
+                        </h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <!-- Text Recognition Group -->
+                            <div class="list-group-item bg-light py-2 px-3">
+                                <small class="text-muted fw-semibold">TEXT RECOGNITION</small>
+                            </div>
+                            <a href="/excel/create" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                <div class="d-flex align-items-center">
+                                    <span class="me-3 fs-4">🖼️</span>
+                                    <div>
+                                        <h6 class="mb-1 fw-semibold">Generate Excel</h6>
+                                        <small class="text-muted">Create Excel from Scratch</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="/excel/read" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                <div class="d-flex align-items-center">
+                                    <span class="me-3 fs-4">📄</span>
+                                    <div>
+                                        <h6 class="mb-1 fw-semibold">Read Excel</h6>
+                                        <small class="text-muted">Perform XL on Excel files</small>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="/excel/pdf" class="list-group-item list-group-item-action py-3 px-4 border-0">
+                                <div class="d-flex align-items-center">
+                                    <span class="me-3 fs-4">🌐</span>
+                                    <div>
+                                        <h6 class="mb-1 fw-semibold">Generate PDF</h6>
+                                        <small class="text-muted">Generate PDF from Excel using IronXL</small>
+                                    </div>
+                                </div>
+                            </a>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <a href="/pdf/secure" class="list-group-item list-group-item-action">
-            🔐 Secure PDF (Password & Permissions)
-        </a>
-        <a href="/pdf/generate-qr-svg" class="list-group-item list-group-item-action">
-            🧩 Add QR Code & Logo to PDF
-        </a>
-
+            <!-- Footer Info -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="alert alert-info border-0 bg-light">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <div>
+                                <strong>Pro Tip:</strong> All operations are powered by IronPDF and IronOCR libraries,
+                                providing enterprise-grade document processing capabilities with high accuracy and performance.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
 </div>
+
+<style>
+    .list-group-item-action:hover {
+        background-color: var(--bs-gray-50);
+        transform: translateX(5px);
+        transition: all 0.2s ease-in-out;
+    }
+
+    .card {
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+    .list-group-item-action {
+        border-left: 3px solid transparent;
+    }
+
+        .list-group-item-action:hover {
+            border-left-color: var(--bs-primary);
+        }
+</style>
