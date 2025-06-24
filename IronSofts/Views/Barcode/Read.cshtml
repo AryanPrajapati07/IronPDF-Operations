@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Read Barcode";
+}
+
+<h2>📤 Upload Barcode Image</h2>
+
+<form asp-action="Read" asp-controller="Barcode" method="post" enctype="multipart/form-data">
+    <div>
+        <label for="image">Select Barcode Image:</label>
+        <input type="file" name="image" accept="image/*" required />
+    </div>
+    <br />
+    <button type="submit">🔍 Read Barcode</button>
+
+    
+</form>
+

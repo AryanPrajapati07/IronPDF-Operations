@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BarCode" Version="2025.6.7" />
     <PackageReference Include="IronOcr" Version="2025.6.4" />
     <PackageReference Include="IronOcr.Languages.Gujarati" Version="2020.11.2" />
     <PackageReference Include="IronOcr.Languages.Hindi" Version="2020.11.2" />
