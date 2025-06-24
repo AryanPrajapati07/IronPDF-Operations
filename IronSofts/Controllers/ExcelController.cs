@@ -59,24 +59,21 @@ namespace IronSofts.Controllers
             return Content(result);
         }
 
-        //[HttpGet("/excel/pdf")]
-        //public IActionResult ConvertExcelToPdf()
-        //{
-        //    var workbook = WorkBook.Load("wwwroot/files/created.xlsx");
-        //    string pdfPath = "wwwroot/files/exported.pdf";
-        //    workbook.SaveAs(pdfPath);
+        [HttpGet("/excel/pdf")]
+        public IActionResult ConvertExcelToPdf()
+        {
+            var workbook = WorkBook.Load("wwwroot/files/created.xlsx");
 
-        //    return File(System.IO.File.ReadAllBytes(pdfPath), "application/pdf", "exported.pdf");
-        //}
+            string html = workbook.ExportToHtmlString();
 
-        //public WorkSheet DataTableToExcel(DataTable table)
-        //{
-        //    var workbook = WorkBook.Create(ExcelFileFormat.XLSX);
-        //    var sheet = workbook.CreateWorkSheet("Data");
+            var renderer = new HtmlToPdf();
+            var pdf = renderer.RenderHtmlAsPdf(html);
 
-        //    sheet["A1"].InsertDataTable(table, startRowIndex: 0, startColumnIndex: 0, printColumnHeaders: true);
-        //    return sheet;
-        //}
+            string pdfPath = "wwwroot/files/exported.pdf";
+            pdf.SaveAs(pdfPath);
+
+            return File(System.IO.File.ReadAllBytes(pdfPath), "application/pdf", "exported.pdf");
+        }
 
 
 
