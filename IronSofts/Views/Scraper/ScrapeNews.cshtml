@@ -1,0 +1,147 @@
+﻿@model List<string>
+
+@{
+    ViewData["Title"] = "News Headlines";
+}
+
+<div class="news-container">
+    <header class="news-header">
+        <h1>📰 Latest Headlines</h1>
+        <div class="news-meta">
+            <span>Last Updated : @DateTime.Now.ToString("MMM dd, yyyy h:mm tt")</span>
+            <button onclick="location.reload()">Refresh</button>
+        </div>
+    </header>
+
+    @if (ViewData["Error"] != null)
+    {
+        <div class="error">
+            ⚠️ @ViewData["Error"]
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="headlines">
+            @foreach (var headline in Model)
+            {
+                <div class="headline">
+                    <h3>@headline</h3>
+                </div>
+            }
+        </div>
+    }
+    else if (ViewData["Error"] == null)
+    {
+        <div class="empty">
+            <p>📭 No headlines available</p>
+        </div>
+    }
+</div>
+
+<style>
+    .news-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: system-ui, sans-serif;
+    }
+
+    .news-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+        .news-header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: #333;
+        }
+
+    .news-meta {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+        .news-meta button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+            .news-meta button:hover {
+                background: #0056b3;
+            }
+
+    .error {
+        background: #f8d7da;
+        color: #721c24;
+        padding: 12px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        border: 1px solid #f5c6cb;
+    }
+
+    .headlines {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .headline {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+        .headline:hover {
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .headline h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+    .empty {
+        text-align: center;
+        padding: 40px;
+        color: #666;
+    }
+
+        .empty p {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+    (max-width: 600px) {
+        .news-header
+
+    {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .news-header h1 {
+        font-size: 1.5rem;
+    }
+
+    }
+</style>

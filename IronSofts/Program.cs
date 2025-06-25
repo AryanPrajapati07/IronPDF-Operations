@@ -9,6 +9,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IViewRenderService, ViewRenderService>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
+
 
 var app = builder.Build();
 
@@ -27,6 +36,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseCors("AllowAll");
 
 
 app.MapControllerRoute(

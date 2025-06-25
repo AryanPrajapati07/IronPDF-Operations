@@ -1,298 +1,225 @@
-﻿@{
-    ViewData["Title"] = "PDF & OCR Operations";
-}
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Processing Suite</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<div class="container-fluid py-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-xl-10">
-            <!-- Header Section -->
-            <div class="text-center mb-5">
-                <h1 class="display-4 text-primary fw-bold mb-3">Document Processing Suite</h1>
-                <p class="lead text-muted">Comprehensive PDF manipulation and OCR text extraction tools</p>
-            </div>
+        .card {
+            border: none;
+            border-radius: 12px;
+            transition: transform 0.2s ease;
+        }
 
-            <div class="row g-4">
-                <!-- PDF Operations Section -->
-                <div class="col-12 col-lg-6">
-                    <div class="card h-100 shadow-sm border-0">
-                        <div class="card-header bg-primary text-white py-3">
-                            <h3 class="card-title mb-0 d-flex align-items-center">
-                                <i class="bi bi-file-earmark-pdf me-2"></i>
-                                IronPDF Operations
-                            </h3>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="list-group list-group-flush">
-                                <!-- Generation Group -->
-                                <div class="list-group-item bg-light py-2 px-3">
-                                    <small class="text-muted fw-semibold">DOCUMENT CREATION</small>
-                                </div>
-                                <a href="/pdf/generate" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-3 fs-4">📄</span>
-                                        <div>
-                                            <h6 class="mb-1 fw-semibold">Generate PDF from Razor View</h6>
-                                            <small class="text-muted">Convert HTML/Razor views into PDF documents</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="/pdf/generate-qr-svg" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-3 fs-4">🧩</span>
-                                        <div>
-                                            <h6 class="mb-1 fw-semibold">Add QR Code & Logo to PDF</h6>
-                                            <small class="text-muted">Embed QR codes and logos into PDF documents</small>
-                                        </div>
-                                    </div>
-                                </a>
+            .card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            }
 
-                                <!-- Manipulation Group -->
-                                <div class="list-group-item bg-light py-2 px-3">
-                                    <small class="text-muted fw-semibold">DOCUMENT MANIPULATION</small>
-                                </div>
-                                <a href="/pdf/merge" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-3 fs-4">🔀</span>
-                                        <div>
-                                            <h6 class="mb-1 fw-semibold">Merge Multiple PDFs</h6>
-                                            <small class="text-muted">Combine two or more PDF files into one</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="/pdf/split" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-3 fs-4">✂️</span>
-                                        <div>
-                                            <h6 class="mb-1 fw-semibold">Split PDF into Pages</h6>
-                                            <small class="text-muted">Extract individual pages from PDF documents</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="/pdf/format" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-3 fs-4">📝</span>
-                                        <div>
-                                            <h6 class="mb-1 fw-semibold">Format PDF</h6>
-                                            <small class="text-muted">Add headers, footers, and watermarks</small>
-                                        </div>
-                                    </div>
-                                </a>
+        .feature-link {
+            display: block;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #333;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: white;
+            border: 1px solid #e9ecef;
+            transition: all 0.2s ease;
+        }
 
-                                <!-- Processing Group -->
-                                <div class="list-group-item bg-light py-2 px-3">
-                                    <small class="text-muted fw-semibold">DOCUMENT PROCESSING</small>
-                                </div>
-                                <a href="/pdf/extract-text" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-3 fs-4">🔍</span>
-                                        <div>
-                                            <h6 class="mb-1 fw-semibold">Extract Text Content</h6>
-                                            <small class="text-muted">Extract and analyze text from PDF files</small>
-                                        </div>
-                                    </div>
+            .feature-link:hover {
+                background: #f8f9fa;
+                color: #0d6efd;
+                border-color: #0d6efd;
+                text-decoration: none;
+            }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #495057;
+        }
+
+        .main-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6c757d;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+
+                <!-- Header -->
+                <div class="text-center mb-5">
+                    <h1 class="main-title">Document Processing</h1>
+                    <p class="subtitle">Simple tools for PDF, OCR, Excel, Barcode & WebScraper operations</p>
+                </div>
+
+                <!-- Main Grid -->
+                <div class="row g-4">
+
+                    <!-- PDF Operations -->
+                    <div class="col-12 col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body p-4">
+                                <h5 class="section-title">
+                                    <i class="bi bi-file-earmark-pdf text-danger me-2"></i>PDF Tools
+                                </h5>
+
+                                <a href="/pdf/generate" class="feature-link">
+                                    <i class="bi bi-file-plus me-2"></i>Create PDF
                                 </a>
-                                <a href="/pdf/to-image" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-3 fs-4">🖼️</span>
-                                        <div>
-                                            <h6 class="mb-1 fw-semibold">Convert to Images</h6>
-                                            <small class="text-muted">Render PDF pages as high-quality images</small>
-                                        </div>
-                                    </div>
+                                <a href="/pdf/merge" class="feature-link">
+                                    <i class="bi bi-files me-2"></i>Merge PDFs
                                 </a>
-                                <a href="/pdf/secure" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-3 fs-4">🔐</span>
-                                        <div>
-                                            <h6 class="mb-1 fw-semibold">Secure PDF</h6>
-                                            <small class="text-muted">Apply password protection and permissions</small>
-                                        </div>
-                                    </div>
+                                <a href="/pdf/split" class="feature-link">
+                                    <i class="bi bi-scissors me-2"></i>Split PDF
+                                </a>
+                                <a href="/pdf/extract-text" class="feature-link">
+                                    <i class="bi bi-search me-2"></i>Extract Text
+                                </a>
+                                <a href="/pdf/to-image" class="feature-link">
+                                    <i class="bi bi-image me-2"></i>PDF to Images
+                                </a>
+                                <a href="/pdf/secure" class="feature-link">
+                                    <i class="bi bi-shield-lock me-2"></i>Secure PDF
                                 </a>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- OCR Operations Section -->
-                <div class="col-12 col-lg-6">
-                    <div class="card h-100 shadow-sm border-0">
-                        <div class="card-header bg-success text-white py-3">
-                            <h3 class="card-title mb-0 d-flex align-items-center">
-                                <i class="bi bi-eye me-2"></i>
-                                IronOCR Operations
-                            </h3>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="list-group list-group-flush">
-                                <!-- Text Recognition Group -->
-                                <div class="list-group-item bg-light py-2 px-3">
-                                    <small class="text-muted fw-semibold">TEXT RECOGNITION</small>
-                                </div>
-                                <a href="/ocr/image" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-3 fs-4">🖼️</span>
-                                        <div>
-                                            <h6 class="mb-1 fw-semibold">Read Image Text</h6>
-                                            <small class="text-muted">Extract text from images using OCR technology</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="/ocr/PDF" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-3 fs-4">📄</span>
-                                        <div>
-                                            <h6 class="mb-1 fw-semibold">Read PDF Text</h6>
-                                            <small class="text-muted">Perform OCR on PDF documents and scanned files</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="/ocr/multi-lang" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-3 fs-4">🌐</span>
-                                        <div>
-                                            <h6 class="mb-1 fw-semibold">Multi-Language Text</h6>
-                                            <small class="text-muted">Recognize text in multiple languages</small>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="/ocr/handwriting" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-3 fs-4">🌐</span>
-                                        <div>
-                                            <h6 class="mb-1 fw-semibold">Handwriting to Text</h6>
-                                            <small class="text-muted">Recognize text in multiple languages</small>
-                                        </div>
-                                    </div>
-                                </a>
+                    <!-- OCR Operations -->
+                    <div class="col-12 col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body p-4">
+                                <h5 class="section-title">
+                                    <i class="bi bi-eye text-success me-2"></i>OCR Tools
+                                </h5>
 
-                                <!-- Data Extraction Group -->
-                                <div class="list-group-item bg-light py-2 px-3">
-                                    <small class="text-muted fw-semibold">DATA EXTRACTION</small>
-                                </div>
-                                <a href="/ocr/table" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="me-3 fs-4">📊</span>
-                                        <div>
-                                            <h6 class="mb-1 fw-semibold">Extract Table Data</h6>
-                                            <small class="text-muted">Identify and extract structured table data</small>
-                                        </div>
-                                    </div>
+                                <a href="/ocr/image" class="feature-link">
+                                    <i class="bi bi-card-image me-2"></i>Read Image Text
+                                </a>
+                                <a href="/ocr/pdf" class="feature-link">
+                                    <i class="bi bi-file-text me-2"></i>Read PDF Text
+                                </a>
+                                <a href="/ocr/handwriting" class="feature-link">
+                                    <i class="bi bi-pencil me-2"></i>Read Handwriting
+                                </a>
+                                <a href="/ocr/multi-lang" class="feature-link">
+                                    <i class="bi bi-translate me-2"></i>Multi-Language
+                                </a>
+                                <a href="/ocr/table" class="feature-link">
+                                    <i class="bi bi-table me-2"></i>Extract Tables
                                 </a>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- XL Operations Section -->
-            <div class="col-12 col-lg-6">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-header bg-success text-white py-3">
-                        <h3 class="card-title mb-0 d-flex align-items-center">
-                            <i class="bi bi-eye me-2"></i>
-                            IronXL Operations
-                        </h3>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="list-group list-group-flush">
-                            <!-- Text Recognition Group -->
-                            <div class="list-group-item bg-light py-2 px-3">
-                                <small class="text-muted fw-semibold">TEXT RECOGNITION</small>
+                    <!-- Excel Operations -->
+                    <div class="col-12 col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body p-4">
+                                <h5 class="section-title">
+                                    <i class="bi bi-file-earmark-excel text-primary me-2"></i>Excel Tools
+                                </h5>
+
+                                <a href="/excel/create" class="feature-link">
+                                    <i class="bi bi-plus-circle me-2"></i>Create Excel
+                                </a>
+                                <a href="/excel/read" class="feature-link">
+                                    <i class="bi bi-eye me-2"></i>Read Excel
+                                </a>
+                                <a href="/excel/pdf" class="feature-link">
+                                    <i class="bi bi-arrow-right me-2"></i>Excel to PDF
+                                </a>
                             </div>
-                            <a href="/excel/create" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                <div class="d-flex align-items-center">
-                                    <span class="me-3 fs-4">🖼️</span>
-                                    <div>
-                                        <h6 class="mb-1 fw-semibold">Generate Excel</h6>
-                                        <small class="text-muted">Create Excel from Scratch</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="/excel/read" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                <div class="d-flex align-items-center">
-                                    <span class="me-3 fs-4">📄</span>
-                                    <div>
-                                        <h6 class="mb-1 fw-semibold">Read Excel</h6>
-                                        <small class="text-muted">Perform XL on Excel files</small>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="/excel/pdf" class="list-group-item list-group-item-action py-3 px-4 border-0">
-                                <div class="d-flex align-items-center">
-                                    <span class="me-3 fs-4">🌐</span>
-                                    <div>
-                                        <h6 class="mb-1 fw-semibold">Generate PDF</h6>
-                                        <small class="text-muted">Generate PDF from Excel using IronXL</small>
-                                    </div>
-                                </div>
-                            </a>
-                           
                         </div>
                     </div>
-                </div>
-            </div>
 
+                    <!-- Barcode Operations -->
+                    <div class="col-12 col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body p-4">
+                                <h5 class="section-title">
+                                    <i class="bi bi-upc-scan text-warning me-2"></i>Barcode Tools
+                                </h5>
 
-            <div class="col-12 col-lg-6">
-                <div class="card h-100 shadow-sm border-0">
-                    <div class="card-header bg-success text-white py-3">
-                        <h3 class="card-title mb-0 d-flex align-items-center">
-                            <i class="bi bi-eye me-2"></i>
-                            IronBarCode Operations
-                        </h3>
+                                <a href="/barcode/generate" class="feature-link">
+                                    <i class="bi bi-plus-square me-2"></i>Create Barcode
+                                </a>
+                                <a href="/barcode/qr-logo" class="feature-link">
+                                    <i class="bi bi-qr-code me-2"></i>QR with Logo
+                                </a>
+                                <a href="/barcode/read" class="feature-link">
+                                    <i class="bi bi-scan me-2"></i>Read Barcode
+                                </a>
+                                <a href="/barcode/pdf" class="feature-link">
+                                    <i class="bi bi-file-pdf me-2"></i>Barcode to PDF
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <a href="/barcode/generate" class="list-group-item list-group-item-action py-3 px-4 border-0">Generate BarCode</a>
-                    <a href="/barcode/qr-logo" class="list-group-item list-group-item-action py-3 px-4 border-0">Generate BarCode with Logo</a>
-                    <a href="/barcode/read" class="list-group-item list-group-item-action py-3 px-4 border-0">Read BarCode</a>
-                    <a href="/barcode/pdf" class="list-group-item list-group-item-action py-3 px-4 border-0">Export BarCode to PDF</a>
 
-                </div>
+                    <!-- Web Scraper -->
                    
-            </div>
+                        <div class="col-12 col-md-6">
+                            <div class="card">
+                                <div class="card-body p-4">
+                                    <h5 class="section-title">
+                                        <i class="bi bi-globe text-info me-2"></i>Web Scraper
+                                    </h5>
+                                    <a href="/scraper/news" class="feature-link">
+                                        <i class="bi bi-newspaper me-2"></i>Scrape News
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
 
-           
-
-            <!-- Footer Info -->
-            <div class="row mt-5">
-                <div class="col-12">
-                    <div class="alert alert-info border-0 bg-light">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-info-circle me-2"></i>
-                            <div>
-                                <strong>Pro Tip:</strong> All operations are powered by IronPDF and IronOCR libraries,
-                                providing enterprise-grade document processing capabilities with high accuracy and performance.
+                    <!-- Dynamic PDF with API -->
+                    <div class="col-12 col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body p-4">
+                                <h5 class="section-title">
+                                    <i class="bi bi-globe text-info me-2"></i>Dynamic PDF with API
+                                </h5>
+                                <a href="/pdf/api-generated" class="feature-link">
+                                    <i class="bi bi-newspaper me-2"></i>Dynamic PDF Download
+                                </a>
+                                <a href="/news/latest" class="feature-link">
+                                    <i class="bi bi-newspaper me-2"></i>Scrape News with API
+                                </a>
                             </div>
                         </div>
                     </div>
+
                 </div>
+
+              
+
+               
+                
+
+
             </div>
         </div>
     </div>
-</div>
-
-
-
-<style>
-    .list-group-item-action:hover {
-        background-color: var(--bs-gray-50);
-        transform: translateX(5px);
-        transition: all 0.2s ease-in-out;
-    }
-
-    .card {
-        transition: transform 0.2s ease-in-out;
-    }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-    .list-group-item-action {
-        border-left: 3px solid transparent;
-    }
-
-        .list-group-item-action:hover {
-            border-left-color: var(--bs-primary);
-        }
-</style>
+</body>
+</html>
